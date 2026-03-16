@@ -1,0 +1,455 @@
+{
+    "word": "control",
+    "entries": [
+        {
+            "language": {
+                "code": "en",
+                "name": "English"
+            },
+            "partOfSpeech": "verb",
+            "pronunciations": [
+                {
+                    "type": "ipa",
+                    "text": "/kənˈtɹəʊl/",
+                    "tags": [
+                        "UK"
+                    ]
+                },
+                {
+                    "type": "ipa",
+                    "text": "/kənˈtɹoʊl/",
+                    "tags": [
+                        "US"
+                    ]
+                }
+            ],
+            "forms": [
+                {
+                    "word": "controls",
+                    "tags": [
+                        "present",
+                        "singular",
+                        "third-person"
+                    ]
+                },
+                {
+                    "word": "controlling",
+                    "tags": [
+                        "participle",
+                        "present"
+                    ]
+                },
+                {
+                    "word": "controlled",
+                    "tags": [
+                        "participle",
+                        "past"
+                    ]
+                },
+                {
+                    "word": "controlled",
+                    "tags": [
+                        "past"
+                    ]
+                },
+                {
+                    "word": "Ctrl",
+                    "tags": [
+                        "alternative"
+                    ]
+                },
+                {
+                    "word": "comptrol",
+                    "tags": [
+                        "alternative",
+                        "archaic"
+                    ]
+                },
+                {
+                    "word": "comptroll",
+                    "tags": [
+                        "alternative",
+                        "archaic"
+                    ]
+                },
+                {
+                    "word": "controll",
+                    "tags": [
+                        "alternative",
+                        "obsolete"
+                    ]
+                },
+                {
+                    "word": "controul",
+                    "tags": [
+                        "alternative",
+                        "obsolete"
+                    ]
+                },
+                {
+                    "word": "countrol",
+                    "tags": [
+                        "alternative",
+                        "obsolete"
+                    ]
+                }
+            ],
+            "senses": [
+                {
+                    "definition": "(transitive) To exercise influence over; to suggest or dictate the behavior of.",
+                    "tags": [
+                        "transitive"
+                    ],
+                    "examples": [
+                        "With a simple remote, he could control the toy truck."
+                    ],
+                    "quotes": [
+                        {
+                            "text": "This was a wonderful advert for the Premier League, with both Chelsea and United intent on all-out attack - but Ferguson will be concerned at how his side lost their way after imperiously controlling much of the first period.",
+                            "reference": "2011 March 1, Phil McNulty, “Chelsea 2 - 1 Man Utd”, in BBC:"
+                        },
+                        {
+                            "text": "In order to grant the rich these pleasures, the social contract is reconfigured. […] The public realm is privatised, the regulations restraining the ultra–wealthy and the companies they control are abandoned, and Edwardian levels of inequality are almost fetishised.",
+                            "reference": "2013 May 17, George Monbiot, “Money just makes the rich suffer”, in The Guardian Weekly, volume 188, number 23, page 19:"
+                        }
+                    ],
+                    "synonyms": [
+                        "besteer",
+                        "bewield",
+                        "manage",
+                        "puppeteer",
+                        "rule"
+                    ],
+                    "antonyms": [],
+                    "subsenses": []
+                },
+                {
+                    "definition": "(transitive, statistics) (construed with for) To design (an experiment) so that the effects of one or more variables are reduced or eliminated.",
+                    "tags": [
+                        "transitive"
+                    ],
+                    "examples": [],
+                    "quotes": [],
+                    "synonyms": [],
+                    "antonyms": [],
+                    "subsenses": []
+                },
+                {
+                    "definition": "(transitive, archaic) To verify the accuracy of (something or someone, especially a financial account) by comparison with another account.",
+                    "tags": [
+                        "archaic",
+                        "transitive"
+                    ],
+                    "examples": [],
+                    "quotes": [],
+                    "synonyms": [],
+                    "antonyms": [],
+                    "subsenses": []
+                },
+                {
+                    "definition": "(transitive, obsolete) To call to account, to take to task, to challenge.",
+                    "tags": [
+                        "obsolete",
+                        "transitive"
+                    ],
+                    "examples": [],
+                    "quotes": [
+                        {
+                            "text": "I fortuned to come in,\nThys rebell to behold,\nWhereof I hym controld;\nBut he sayde that he wolde\nAgaynst my mynde and wyll\nIn my church hawke styll.",
+                            "reference": "c. 1503–1512, John Skelton, Ware the Hauke; republished in John Scattergood, editor, John Skelton: The Complete English Poems, 1983, →OCLC, page 64, lines 94–99:"
+                        }
+                    ],
+                    "synonyms": [],
+                    "antonyms": [],
+                    "subsenses": []
+                },
+                {
+                    "definition": "(transitive) To hold in check, to curb, to restrain.",
+                    "tags": [
+                        "transitive"
+                    ],
+                    "examples": [],
+                    "quotes": [
+                        {
+                            "text": "Because only by the Capette Pellet method of hormonization can growers be assured of controlled dosage and uniform results.",
+                            "reference": "1956, American Poultry Journal, volume 87, page 32:"
+                        }
+                    ],
+                    "synonyms": [],
+                    "antonyms": [],
+                    "subsenses": []
+                }
+            ],
+            "synonyms": [],
+            "antonyms": [
+                "defy",
+                "rebel",
+                "resist",
+                "obey",
+                "submit"
+            ]
+        },
+        {
+            "language": {
+                "code": "en",
+                "name": "English"
+            },
+            "partOfSpeech": "noun",
+            "pronunciations": [
+                {
+                    "type": "ipa",
+                    "text": "/kənˈtɹəʊl/",
+                    "tags": [
+                        "UK"
+                    ]
+                },
+                {
+                    "type": "ipa",
+                    "text": "/kənˈtɹoʊl/",
+                    "tags": [
+                        "US"
+                    ]
+                }
+            ],
+            "forms": [
+                {
+                    "word": "controls",
+                    "tags": [
+                        "plural"
+                    ]
+                },
+                {
+                    "word": "Ctrl",
+                    "tags": [
+                        "alternative"
+                    ]
+                },
+                {
+                    "word": "comptrol",
+                    "tags": [
+                        "alternative",
+                        "archaic"
+                    ]
+                },
+                {
+                    "word": "comptroll",
+                    "tags": [
+                        "alternative",
+                        "archaic"
+                    ]
+                },
+                {
+                    "word": "controll",
+                    "tags": [
+                        "alternative",
+                        "obsolete"
+                    ]
+                },
+                {
+                    "word": "controul",
+                    "tags": [
+                        "alternative",
+                        "obsolete"
+                    ]
+                },
+                {
+                    "word": "countrol",
+                    "tags": [
+                        "alternative",
+                        "obsolete"
+                    ]
+                }
+            ],
+            "senses": [
+                {
+                    "definition": "(countable, uncountable) An influence or authority over something.",
+                    "tags": [
+                        "countable",
+                        "uncountable"
+                    ],
+                    "examples": [
+                        "The government has complete control over the situation."
+                    ],
+                    "quotes": [],
+                    "synonyms": [],
+                    "antonyms": [],
+                    "subsenses": []
+                },
+                {
+                    "definition": "The method and means of governing the performance of any apparatus, machine or system, such as a lever, handle or button.",
+                    "tags": [
+                        "countable",
+                        "uncountable"
+                    ],
+                    "examples": [],
+                    "quotes": [],
+                    "synonyms": [],
+                    "antonyms": [],
+                    "subsenses": []
+                },
+                {
+                    "definition": "Restraint or ability to contain one's movements or emotions, or self-control.",
+                    "tags": [
+                        "countable",
+                        "uncountable"
+                    ],
+                    "examples": [],
+                    "quotes": [
+                        {
+                            "text": "She had no control of her body as she tumbled downhill. She did not know up from down. It was not unlike being cartwheeled in a relentlessly crashing wave.",
+                            "reference": "2012, John Branch, “Snow Fall : The Avalanche at Tunnel Creek”, in New York Times:"
+                        },
+                        {
+                            "text": "The dirty secret of the internet is that all this distraction and interruption is immensely profitable. Web companies like to boast about […], or offering services that let you[…] \"share the things you love with the world\" and so on. But the real way to build a successful online business is to be better than your rivals at undermining people's control of their own attention.",
+                            "reference": "2013 June 21, Oliver Burkeman, “The tao of tech”, in The Guardian Weekly, volume 189, number 2, page 27:"
+                        }
+                    ],
+                    "synonyms": [],
+                    "antonyms": [],
+                    "subsenses": []
+                },
+                {
+                    "definition": "A security mechanism, policy, or procedure that can counter system attack, reduce risks, and resolve vulnerabilities; a safeguard or countermeasure.",
+                    "tags": [
+                        "countable",
+                        "uncountable"
+                    ],
+                    "examples": [],
+                    "quotes": [],
+                    "synonyms": [],
+                    "antonyms": [],
+                    "subsenses": []
+                },
+                {
+                    "definition": "(project management) A means of monitoring for, and triggering intervention in, activities that are not going according to plan.",
+                    "tags": [
+                        "countable",
+                        "uncountable"
+                    ],
+                    "examples": [],
+                    "quotes": [],
+                    "synonyms": [],
+                    "antonyms": [],
+                    "subsenses": []
+                },
+                {
+                    "definition": "A control group or control experiment.",
+                    "tags": [
+                        "countable",
+                        "uncountable"
+                    ],
+                    "examples": [],
+                    "quotes": [],
+                    "synonyms": [],
+                    "antonyms": [],
+                    "subsenses": []
+                },
+                {
+                    "definition": "A duplicate book, register, or account, kept to correct or check another account or register.",
+                    "tags": [
+                        "countable",
+                        "uncountable"
+                    ],
+                    "examples": [],
+                    "quotes": [
+                        {
+                            "text": "“The entries in the control accounts reflect respectively the effect of the transactions on the value of Korrinna company’s receivables (sales ledger control account) and payables (purchase ledger control account.”",
+                            "reference": "2006, Henry Lunt, Fundamentals of Financial Accounting, page 297:"
+                        },
+                        {
+                            "text": "\"Make sure you enter the total of any credit balances in the sales ledger into the Sales Ledger Control Account and the total of any debit balances in the purchase ledger into the Purchase Ledger Control Account.\"",
+                            "reference": "2012, Harold Randall, David Hopkins, Cambridge International AS and A Level Accounting Textbook, page 78:"
+                        },
+                        {
+                            "text": "“Wages Control Account: This account records wage transactions in aggregate. Postings are made from wage analysis sheet. This account is debited with gross wages (paid and accrued) and is closed by transfer of direct wages to work-in-progress and indirect wages to factory, administration and selling and distribution overheads control accounts as illustrated below:”",
+                            "reference": "2012, Aurora M.N., A textbook of Cost and Management Accounting, 10th Edition, page 12-3:"
+                        }
+                    ],
+                    "synonyms": [],
+                    "antonyms": [],
+                    "subsenses": []
+                },
+                {
+                    "definition": "(graphical user interface) An interface element that a computer user interacts with, such as a window or a text box.",
+                    "tags": [
+                        "countable",
+                        "uncountable"
+                    ],
+                    "examples": [],
+                    "quotes": [],
+                    "synonyms": [
+                        "widget"
+                    ],
+                    "antonyms": [],
+                    "subsenses": []
+                },
+                {
+                    "definition": "(climatology) Any of the physical factors determining the climate of a place, such as latitude, distribution of land and water, altitude, exposure, prevailing winds, permanent high- or low-barometric-pressure areas, ocean currents, mountain barriers, soil, and vegetation.",
+                    "tags": [
+                        "countable",
+                        "uncountable"
+                    ],
+                    "examples": [],
+                    "quotes": [],
+                    "synonyms": [],
+                    "antonyms": [],
+                    "subsenses": []
+                },
+                {
+                    "definition": "(linguistics) A construction in which the understood subject of a given predicate is determined by an expression in context. See control.",
+                    "tags": [
+                        "countable",
+                        "uncountable"
+                    ],
+                    "examples": [],
+                    "quotes": [],
+                    "synonyms": [],
+                    "antonyms": [],
+                    "subsenses": []
+                },
+                {
+                    "definition": "(parapsychology) A spirit that takes possession of a psychic or medium and allows other spirits to communicate with the living.",
+                    "tags": [
+                        "countable",
+                        "uncountable"
+                    ],
+                    "examples": [],
+                    "quotes": [
+                        {
+                            "text": "\"Ah, who are they? I wonder. Guides, controls, psychic entities of some kind. Who the agents of vengeance - or I should say justice - are, is really not essential.\"",
+                            "reference": "1925 July – 1926 May, A[rthur] Conan Doyle, “(please specify the chapter number)”, in The Land of Mist (eBook no. 0601351h.html), Australia: Project Gutenberg Australia, published April 2019:"
+                        }
+                    ],
+                    "synonyms": [],
+                    "antonyms": [],
+                    "subsenses": []
+                },
+                {
+                    "definition": "(cycling, countable) A checkpoint along an audax route.",
+                    "tags": [
+                        "countable"
+                    ],
+                    "examples": [],
+                    "quotes": [
+                        {
+                            "text": "[…] the self-acknowledged stereotype of the audaxer as a socially awkward middle-aged man, […] carefully avoiding eye contact as a volunteer serves him his cup of tea and plate of baked beans in one of the draughty village halls that typically host audax controls.",
+                            "reference": "2019, Emily Chappell, Where There's a Will:"
+                        }
+                    ],
+                    "synonyms": [],
+                    "antonyms": [],
+                    "subsenses": []
+                }
+            ],
+            "synonyms": [],
+            "antonyms": []
+        }
+    ],
+    "source": {
+        "url": "https://en.wiktionary.org/wiki/control",
+        "license": {
+            "name": "CC BY-SA 4.0",
+            "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+        }
+    }
+}

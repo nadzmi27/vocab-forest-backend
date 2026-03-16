@@ -1,0 +1,16 @@
+### Install extension REST Client on vscode extension
+### Variables to avoid repitition on testing
+@hostname = localhost
+@port = 8000
+@host = {{hostname}}:{{port}}
+@token = {{$dotenv TOKEN}}
+@word = bank
+
+###
+POST http://{{host}}/
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "word": "{{word}}"
+}
