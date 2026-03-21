@@ -4,7 +4,7 @@
 @port = 8000
 @host = {{hostname}}:{{port}}
 @token = {{$dotenv TOKEN}}
-@word = bank
+# @word = bank
 
 ###
 POST http://{{host}}/
@@ -12,5 +12,23 @@ content-type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "word": "{{word}}"
+    "word": "bank"
+}
+
+###
+POST http://{{host}}/
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "word": "knackered"
+}
+
+###
+POST http://{{host}}/
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "word": "cotrol"
 }
