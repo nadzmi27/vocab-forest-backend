@@ -2,6 +2,7 @@
 import { MWEntry } from "../merriam-webster/types.ts";
 import { supabase } from "./client.ts";
 
+// Words table
 export async function getFromFetchedTerms(term: string) {
   const { data } = await supabase
     .from("fetched_terms")
@@ -65,4 +66,30 @@ export async function getEntriesByWord(word: string) {
 
   if (error) throw new Error(`Query error: ${error.message}`);
   return data;
+}
+
+// User words
+export async function addWordToCollection(
+  userId: string,
+  collectionId: string,
+  word: string,
+) {
+  const { data: userWord, error: userWordError } = await supabase
+    .from("user_words")
+    .upsert({ user_id: userId, word: word }, { onConflict: "user_id, word" })
+    .select("id")
+    .single();
+
+  if (userWordError)
+    throw new Error(`user_words error: ${userWordError.message}`);
+
+  const { error: collectionWordError } = await supabase
+    .from("collection_words")
+    .upsert(
+      { collection_id: collectionId, user_word_id: userWord.id },
+      { onConflict: "collection_id, user_word_id" },
+    );
+
+  if (collectionWordError)
+    throw new Error(`collection_words error: ${collectionWordError.message}`);
 }

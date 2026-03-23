@@ -3,7 +3,6 @@
 import { fetchFromMW, isBaseEntry, isMWEntry } from "./merriam-webster/mw.ts";
 import { MWEntry } from "./merriam-webster/types.ts";
 import {
-  addWordToCollection,
   getEntriesByWord,
   getFromFetchedTerms,
   insertEntries,
@@ -20,8 +19,6 @@ Deno.serve(async (req) => {
     console.log("PART 1 Start");
     const body = await req.json().catch(() => null);
     const word = body?.word?.trim().toLowerCase();
-    const userId = body?.userId;
-    const collectionId = body?.collectionId;
 
     if (!word || typeof word !== "string") {
       return Response.json(
@@ -31,10 +28,10 @@ Deno.serve(async (req) => {
     }
 
     console.log("PART 1 End");
-
     // 2. Check fetched_terms cache
     console.log("PART 2 Start");
     const cached = await getFromFetchedTerms(word);
+
     if (cached) {
       if (!cached.exists) {
         // Word was looked up before and doesn't exist
@@ -43,10 +40,9 @@ Deno.serve(async (req) => {
           { status: 404 },
         );
       }
-      
+
       // Word exists, fetch entries by headword
       const entries = await getEntriesByWord(cached.headword);
-      await addWordToCollection(userId, collectionId, cached.headword);
       return Response.json({ word: cached.headword, entries });
     }
     console.log("PART 2 End");
@@ -54,6 +50,7 @@ Deno.serve(async (req) => {
     // 3. Not in cache, fetch from MW
     console.log("PART 3 Start");
     const mwData = await fetchFromMW(word);
+
     // MW returns string[] when word not found (suggestions or empty)
     if (!mwData.length || !isMWEntry(mwData[0])) {
       await insertFetchedTerm(word, false, null);
@@ -70,9 +67,7 @@ Deno.serve(async (req) => {
 
     // 4. Parse and insert entries
     console.log("PART 4 Start");
-    const mwEntries = (mwData as MWEntry[]).filter((entry) =>
-      isBaseEntry(entry, word),
-    );
+    const mwEntries = (mwData as MWEntry[]).filter(entry => isBaseEntry(entry, word))
     await insertEntries(mwEntries);
 
     // headword from first entry, strip syllable dots
@@ -80,15 +75,9 @@ Deno.serve(async (req) => {
     await insertFetchedTerm(word, true, headword);
     console.log("PART 4 End");
 
-    // 5. Add the word to user's collection
-    console.log("PART 5 Start");
-    await addWordToCollection(userId, collectionId, headword);
-    console.log("PART 5 END");
-
-    // 6. Return entries by headword
+    // 5. Return entries by headword
     console.log("PART 5 Start");
     const entries = await getEntriesByWord(headword);
-    console.log("Entries:", entries);
     return Response.json({ word: headword, entries });
   } catch (err) {
     console.error(err);

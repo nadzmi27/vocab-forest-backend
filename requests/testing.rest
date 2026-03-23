@@ -21,14 +21,14 @@ content-type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "word": "knackered"
+    "word": "props"
 }
 
 ###
-POST http://{{host}}/
+POST https://xegvjimgmzvuukcpwjbk.supabase.co/functions/v1/add-word
 content-type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "word": "cotrol"
+    "word": "bank"
 }
