@@ -76,7 +76,7 @@ export async function addWordToCollection(
 ) {
   const { data: userWord, error: userWordError } = await supabase
     .from("user_words")
-    .upsert({ user_id: userId, word: word }, { onConflict: "user_id, word" })
+    .upsert({ user_id: userId, word: word }, { onConflict: "user_id,word" })
     .select("id")
     .single();
 
@@ -87,7 +87,7 @@ export async function addWordToCollection(
     .from("collection_words")
     .upsert(
       { collection_id: collectionId, user_word_id: userWord.id },
-      { onConflict: "collection_id, user_word_id" },
+      { onConflict: "collection_id,user_word_id" },
     );
 
   if (collectionWordError)

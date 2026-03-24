@@ -1,5 +1,6 @@
 // main.ts
 
+import { error } from "node:console";
 import { fetchFromMW, isBaseEntry, isMWEntry } from "./merriam-webster/mw.ts";
 import { MWEntry } from "./merriam-webster/types.ts";
 import {
@@ -9,6 +10,8 @@ import {
   insertEntries,
   insertFetchedTerm,
 } from "./supabase/db.ts";
+import { createClient } from "jsr:@supabase/supabase-js@2";
+import { supabase } from "./supabase/client.ts";
 
 Deno.serve(async (req) => {
   try {
@@ -17,10 +20,35 @@ Deno.serve(async (req) => {
       return Response.json({ error: "Method not allowed" }, { status: 405 });
     }
 
+    // Verify authorization
+    console.log("Authorization start")
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return Response.json(
+        { error: "Missing or invalid authorization header" },
+        { status: 401 },
+      );
+    }
+
+    const token = authHeader.replace("Bearer ", "");
+    console.log("TOKEN:", token);
+
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser(token);
+
+    console.log("USER:", user)
+    if (authError || !user) {
+      return Response.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    console.log("Authorization end");
+
+
     console.log("PART 1 Start");
     const body = await req.json().catch(() => null);
     const word = body?.word?.trim().toLowerCase();
-    const userId = body?.userId;
+    const userId = user.id
     const collectionId = body?.collectionId;
 
     if (!word || typeof word !== "string") {
@@ -32,6 +60,7 @@ Deno.serve(async (req) => {
 
     console.log("PART 1 End");
 
+    // 2.
     // 2. Check fetched_terms cache
     console.log("PART 2 Start");
     const cached = await getFromFetchedTerms(word);
@@ -43,7 +72,7 @@ Deno.serve(async (req) => {
           { status: 404 },
         );
       }
-      
+
       // Word exists, fetch entries by headword
       const entries = await getEntriesByWord(cached.headword);
       await addWordToCollection(userId, collectionId, cached.headword);
@@ -77,6 +106,7 @@ Deno.serve(async (req) => {
 
     // headword from first entry, strip syllable dots
     const headword = mwEntries[0].hwi.hw.replace(/\*/g, "");
+    console.log("headword:", headword)
     await insertFetchedTerm(word, true, headword);
     console.log("PART 4 End");
 

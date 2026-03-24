@@ -3,6 +3,8 @@
 @hostname = localhost
 @port = 8000
 @host = {{hostname}}:{{port}}
+@userId = {{$dotenv USER_ID}}
+@collectionId = {{$dotenv COLLECTION_ID}}
 @token = {{$dotenv TOKEN}}
 # @word = bank
 
@@ -12,7 +14,9 @@ content-type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "word": "bank"
+    "word": "bank",
+    "userId": "{{userId}}",
+    "collectionId": "{{collectionId}}"
 }
 
 ###
