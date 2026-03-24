@@ -6,3 +6,7 @@ Instruction on how to use for my bestie:
 3. Install the vscode extension REST Client
 4. Run `deno run dev` on command line 
 5. Send post request using requests/testing.rest ![alt text](thisButton.png) 
+
+
+
+Wordlist: https://www.gutenberg.org/files/3201/3201-h/3201-h.htm
