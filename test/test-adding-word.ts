@@ -6,7 +6,7 @@ const TEST_EMAIL = Deno.env.get("TEST_EMAIL")!;
 const TEST_PASSWORD = Deno.env.get("TEST_PASSWORD")!;
 const TEST_COLLECTION_ID = Deno.env.get("TEST_COLLECTION_ID")!;
 const EDGE_FUNCTION_URL = Deno.env.get("EDGE_FUNCTION_URL") ?? "http://localhost:8000";
-const WORD_TO_ADD = "props"
+const WORD_TO_ADD = "well-being"
 console.log("Sign in");
 
 const { data, error: loginError } = await supabase.auth.signInWithPassword({

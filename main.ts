@@ -1,6 +1,5 @@
 // main.ts
 
-import { error } from "node:console";
 import { fetchFromMW, isBaseEntry, isMWEntry } from "./merriam-webster/mw.ts";
 import { MWEntry } from "./merriam-webster/types.ts";
 import {
@@ -50,6 +49,10 @@ Deno.serve(async (req) => {
     const word = body?.word?.trim().toLowerCase();
     const userId = user.id
     const collectionId = body?.collectionId;
+
+    if (!collectionId || typeof collectionId !== "string") {
+      return Response.json({ error: "Missing collectionId" }, { status: 400 });
+    }
 
     if (!word || typeof word !== "string") {
       return Response.json(
@@ -102,8 +105,17 @@ Deno.serve(async (req) => {
     const mwEntries = (mwData as MWEntry[]).filter((entry) =>
       isBaseEntry(entry, word),
     );
-    await insertEntries(mwEntries);
 
+    if (mwEntries.length === 0) {
+      await insertFetchedTerm(word, false, null);
+      return Response.json(
+        { error: `No valid base entries found for "${word}"` },
+        { status: 404 },
+      );
+    }
+
+    await insertEntries(mwEntries);
+    
     // headword from first entry, strip syllable dots
     const headword = mwEntries[0].hwi.hw.replace(/\*/g, "");
     console.log("headword:", headword)

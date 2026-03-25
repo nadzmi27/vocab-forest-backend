@@ -4,12 +4,14 @@ import { supabase } from "./client.ts";
 
 // Words table
 export async function getFromFetchedTerms(term: string) {
-  const { data } = await supabase
+  const { error: getFetchError, data } = await supabase
     .from("fetched_terms")
     .select("*")
     .eq("term", term)
     .maybeSingle();
 
+  if (getFetchError)
+    throw new Error(`Get fetched word error: ${getFetchError.message}`);
   return data;
 }
 
@@ -18,11 +20,16 @@ export async function insertFetchedTerm(
   exists: boolean,
   headword: string | null,
 ) {
-  await supabase.from("fetched_terms").insert({
-    term,
-    exists,
-    headword,
-  });
+  const { error: insertFetchError } = await supabase
+    .from("fetched_terms")
+    .upsert({
+      term,
+      exists,
+      headword,
+    }, {onConflict: "term"});
+
+  if (insertFetchError)
+    throw new Error(`Insert fetched word error: ${insertFetchError.message}`);
 }
 
 export async function insertEntries(entries: MWEntry[]) {
