@@ -97,6 +97,10 @@
     "https://esm.sh/iceberg-js@^0.8.1?target=denonext": "https://esm.sh/iceberg-js@0.8.1?target=denonext"
   },
   "remote": {
+    "https://deno.land/std@0.224.0/assert/assert.ts": "09d30564c09de846855b7b071e62b5974b001bb72a4b797958fe0660e7849834",
+    "https://deno.land/std@0.224.0/assert/assertion_error.ts": "ba8752bd27ebc51f723702fac2f54d3e94447598f54264a6653d6413738a8917",
+    "https://deno.land/std@0.224.0/csv/_io.ts": "568718b7eb4cf3ba140b0690a00ef5a8416ceae9a4116f386114c83717bd8a9e",
+    "https://deno.land/std@0.224.0/csv/parse.ts": "e2d5e82e19b71a968f5fcd3b76b438ee6f646fe8e948c4c2d3b00ad9cd0a659a",
     "https://esm.sh/@supabase/auth-js@2.100.0/denonext/auth-js.mjs": "079e9054663a1cff760451b18bb363a0f12dda9da361d4541db9b28d30b3fbc2",
     "https://esm.sh/@supabase/functions-js@2.100.0/denonext/functions-js.mjs": "60daabe2eabdae4eb57cc4d0a463b3c556f6b0865974b32be874beb987387fdb",
     "https://esm.sh/@supabase/phoenix@0.4.0/denonext/phoenix.mjs": "d9187057b2e3276d1110b9d814f737d4f8eff7f8b2765c4aa6bf7c7c30d070c9",
