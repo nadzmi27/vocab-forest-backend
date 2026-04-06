@@ -1,6 +1,5 @@
 // Config
 const MW_API_KEY = Deno.env.get("MW_API_KEY")!;
-const MW_THESAURUS_API_KEY = Deno.env.get("MW_THESAURUS_API_KEY");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
 
@@ -8,7 +7,6 @@ const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
 import { createClient } from "jsr:@supabase/supabase-js@2";
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-//===============================================================
 // Merriam Webster -- Types
 type MWResponse = MWEntry[] | string[];
 
@@ -63,33 +61,6 @@ interface MWPronunciation {
   };
 }
 
-// Thesaurus types
-interface MWThesaurusEntry {
-  meta: {
-    id: string;
-    uuid: string;
-    src: string;
-    section: string;
-    target?: {
-      tuuid: string; // Use this to match to the collegiate
-      tsrc: string; // Should say collegiate for our matching
-    };
-    stems: string[];
-    syns: string[][]; // List of sysnonyms, will mainly be using this and ants
-    ants: string[][]; // List of antonyms
-    offensive: boolean;
-  };
-  [key: string]: unknown; // catch-all for anything else
-}
-
-// Extended Entry combining Collegiate with Thesaurus
-type ExtendedEntry = MWEntry & {
-  meta: MWEntry["meta"] & {
-    syns?: string[];
-    ants?: string[];
-  };
-};
-
 // Merriam Webster Helper Functions
 // Check if the entry is the base entry (e.g. bank:01, bank:02, controlled) and not compound form (e.g. bank card, controlled-experiment)
 function isBaseEntry(entry: MWEntry, searchTerm: string): boolean {
@@ -97,7 +68,7 @@ function isBaseEntry(entry: MWEntry, searchTerm: string): boolean {
   const headword = entry.hwi.hw.replace(/\*/g, "");
 
   // always keep if it matches what was searched
-  if (headword.toLowerCase() === searchTerm.toLowerCase()) return true;
+  if (headword === searchTerm) return true;
 
   // skip compounds and phrases
   return !id.includes(" ") && !id.includes("-");
@@ -107,120 +78,30 @@ function isMWEntry(item: unknown): item is MWEntry {
   return typeof item === "object" && item !== null && "meta" in item;
 }
 
-function isMWThesaurusEntry(item: unknown): item is MWThesaurusEntry {
-  return (
-    typeof item === "object" &&
-    item !== null &&
-    "meta" in item &&
-    typeof (item as MWThesaurusEntry).meta?.target === "object"
-  );
-}
-
 async function fetchFromMW(word: string): Promise<MWEntry[] | string[]> {
   const url = `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${encodeURIComponent(word)}?key=${MW_API_KEY}`;
   const res = await fetch(url);
 
   if (!res.ok) {
-    throw new Error(`MW Collegiate API error: ${res.status}`);
+    throw new Error(`MW API error: ${res.status}`);
   }
 
   return res.json();
 }
 
-async function fetchFromMWThesaurus(
-  word: string,
-): Promise<MWThesaurusEntry[] | string[]> {
-  const url = `https://www.dictionaryapi.com/api/v3/references/thesaurus/json/${encodeURIComponent(word)}?key=${MW_THESAURUS_API_KEY}`;
-  const res = await fetch(url);
-
-  if (!res.ok) {
-    throw new Error(`MW Thesaurus API error: ${res.status}`);
-  }
-
-  const data = await res.json();
-  // MW returns string[] when not found
-  return Array.isArray(data) ? data.filter(isMWThesaurusEntry) : [];
-}
-
-// Strip the * from word (e.g. co*co*nut -> coconut)
-const strip = (hw: string) => hw.replace(/\*/g, "");
-
-// Combine collegiate with thesaurus
-type ThesaurusBucket = {
-  syns: string[];
-  ants: string[];
-};
-
-function enrichCollegiateWithThesaurus(
-  collegiate: MWEntry[],
-  thesaurus: MWThesaurusEntry[],
-): ExtendedEntry[] {
-  // Step 1 — build aggregated map (handles multiple matches)
-  // uuid/tuuid : {synonyms[], antoynyms[]}
-  const thesaurusMap = new Map<string, ThesaurusBucket>();
-
-  for (const t of thesaurus) {
-    const tuuid = t.meta?.target?.tuuid; // Get the target id
-    if (!tuuid) continue;
-
-    // If tuuid has not been set
-    if (!thesaurusMap.has(tuuid)) {
-      thesaurusMap.set(tuuid, { syns: [], ants: [] });
-    }
-
-    const bucket = thesaurusMap.get(tuuid)!;
-
-    // flatten while inserting (optional: defer flattening instead)
-    if (t.meta.syns) {
-      bucket.syns.push(...t.meta.syns.flat());
-    }
-
-    if (t.meta.ants) {
-      bucket.ants.push(...t.meta.ants.flat());
-    }
-  }
-
-  // Step 2 — remove duplicate from synonyms and antonyms
-  for (const [key, value] of thesaurusMap.entries()) {
-    thesaurusMap.set(key, {
-      syns: [...new Set(value.syns)],
-      ants: [...new Set(value.ants)],
-    });
-  }
-
-  // Step 3 — merge into collegiate
-  const enrichedCollegiate = collegiate.map((entry) => {
-    const match = thesaurusMap.get(entry.meta.uuid);
-
-    if (!match) return entry;
-
-    return {
-      ...entry,
-      meta: {
-        ...entry.meta,
-        syns: match.syns,
-        ants: match.ants,
-      },
-    };
-  });
-
-  return enrichedCollegiate;
-}
-
 // Database function
 // supabase/db.ts
+async function getFromFetchedTerms(term: string) {
+  const { error: getFetchError, data } = await supabase
+    .from("fetched_terms")
+    .select("*")
+    .eq("term", term)
+    .maybeSingle();
 
-// async function getFromFetchedTerms(term: string) {
-//   const { error: getFetchError, data } = await supabase
-//     .from("fetched_terms")
-//     .select("*")
-//     .eq("term", term)
-//     .maybeSingle();
-
-//   if (getFetchError)
-//     throw new Error(`Get fetched word error: ${getFetchError.message}`);
-//   return data;
-// }
+  if (getFetchError)
+    throw new Error(`Get fetched word error: ${getFetchError.message}`);
+  return data;
+}
 
 async function insertFetchedTerm(
   term: string,
@@ -229,20 +110,18 @@ async function insertFetchedTerm(
 ) {
   const { error: insertFetchError } = await supabase
     .from("fetched_terms")
-    .upsert(
-      {
-        term,
-        exists,
-        headword,
-      },
-      { onConflict: "term" },
-    );
+    .upsert({
+      term,
+      exists,
+      headword,
+    }, { onConflict: "term" });
 
   if (insertFetchError)
     throw new Error(`Insert fetched word error: ${insertFetchError.message}`);
 }
 
-async function insertEntries(entries: ExtendedEntry[]) {
+
+async function insertEntries(entries: MWEntry[]) {
   const rows = entries.map((entry) => ({
     uuid: entry.meta.uuid,
     entry_id: entry.meta.id,
@@ -252,8 +131,6 @@ async function insertEntries(entries: ExtendedEntry[]) {
     stems: entry.meta.stems ?? [],
     shortdef: entry.shortdef ?? [],
     raw: entry,
-    syns: entry.meta.syns ?? [],
-    ants: entry.meta.ants ?? [],
   }));
 
   // get unique words from entries
@@ -312,6 +189,7 @@ async function addWordToCollection(
     throw new Error(`collection_words error: ${collectionWordError.message}`);
 }
 
+
 // Handle cors
 const corsHeaders = {
   "Access-Control-Allow-Origin": "http://localhost:5173",
@@ -328,10 +206,7 @@ Deno.serve(async (req) => {
   try {
     // 1. Parse and validate request
     if (req.method !== "POST") {
-      return Response.json(
-        { error: "Method not allowed" },
-        { status: 405, headers: corsHeaders },
-      );
+      return Response.json({ error: "Method not allowed" }, { status: 405, headers: corsHeaders });
     }
 
     // Verify authorization
@@ -339,7 +214,7 @@ Deno.serve(async (req) => {
     if (!authHeader?.startsWith("Bearer ")) {
       return Response.json(
         { error: "Missing or invalid authorization header" },
-        { status: 401, headers: corsHeaders },
+        { status: 401, headers: corsHeaders},
       );
     }
 
@@ -351,22 +226,16 @@ Deno.serve(async (req) => {
     } = await supabase.auth.getUser(token);
 
     if (authError || !user) {
-      return Response.json(
-        { error: "Unauthorized" },
-        { status: 401, headers: corsHeaders },
-      );
+      return Response.json({ error: "Unauthorized" }, { status: 401, headers: corsHeaders });
     }
 
     const body = await req.json().catch(() => null);
-    const word = body?.word?.trim();
-    const userId = user.id;
+    const word = body?.word?.trim().toLowerCase();
+    const userId = user.id
     const collectionId = body?.collectionId;
 
     if (!collectionId || typeof collectionId !== "string") {
-      return Response.json(
-        { error: "Missing collectionId" },
-        { status: 400, headers: corsHeaders },
-      );
+      return Response.json({ error: "Missing collectionId" }, { status: 400, headers: corsHeaders});
     }
 
     if (!word || typeof word !== "string") {
@@ -376,19 +245,28 @@ Deno.serve(async (req) => {
       );
     }
 
-    // 2. Fetch from MW Collegiate and Thesaurus
-    // Lazy parallel for promise
-    const mwPromise = fetchFromMW(word);
-    const thesaurusPromise = fetchFromMWThesaurus(word);
+    // 2. Check fetched_terms cache
+    const cached = await getFromFetchedTerms(word);
+    if (cached) {
+      if (!cached.exists) {
+        // Word was looked up before and doesn't exist
+        return Response.json(
+          { error: `"${word}" was not found in the dictionary` },
+          { status: 404, headers: corsHeaders },
+        );
+      }
 
+      // Word exists, fetch entries by headword
+      const entries = await getEntriesByWord(cached.headword);
+      await addWordToCollection(userId, collectionId, cached.headword);
+      return Response.json({ word: cached.headword, entries }, { headers: corsHeaders });
+    }
+
+    // 3. Not in cache, fetch from MW
+    const mwData = await fetchFromMW(word);
     // MW returns string[] when word not found (suggestions or empty)
-    const mwData = await mwPromise;
     if (!mwData.length || !isMWEntry(mwData[0])) {
       await insertFetchedTerm(word, false, null);
-
-      // Remove from words table if it exists but MW doesn't know it
-      await supabase.from("words").delete().eq("word", word);
-
       const suggestions = mwData.length
         ? { suggestions: mwData as string[] }
         : {};
@@ -398,7 +276,8 @@ Deno.serve(async (req) => {
       );
     }
 
-    // 3. Parse and insert entries
+
+    // 4. Parse and insert entries
     const mwEntries = (mwData as MWEntry[]).filter((entry) =>
       isBaseEntry(entry, word),
     );
@@ -411,45 +290,20 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Enrich collegiate with thesaurus
-    const mwThesaurusData = await thesaurusPromise;
-    if (mwThesaurusData.length > 0) {
-      const mwThesaurusEntries = mwThesaurusData as MWThesaurusEntry[];
-      const enrichedEntries = enrichCollegiateWithThesaurus(
-        mwEntries,
-        mwThesaurusEntries,
-      );
-      await insertEntries(enrichedEntries);
-    } else {
-      await insertEntries(mwEntries);
-    }
+    await insertEntries(mwEntries);
 
     // headword from first entry, strip syllable dots
-    const headword =
-      // 1. Check exact match  "Polish" === "Polish" and not "polish" === "Polish"
-      mwEntries
-        .find((e) => strip(e.hwi.hw) === word)
-        ?.hwi.hw.replace(/\*/g, "") ??
-      // 2. Case-insensitive fallback for typos like "PoLISH" by lowercasing
-      mwEntries
-        .find((e) => strip(e.hwi.hw).toLowerCase() === word.toLowerCase())
-        ?.hwi.hw.replace(/\*/g, "") ??
-      // 3. Last resort, just take whatever the first entry is
-      strip(mwEntries[0].hwi.hw);
-
+    const headword = mwEntries[0].hwi.hw.replace(/\*/g, "");
     await insertFetchedTerm(word, true, headword);
 
-    // 4. Add the word to user's collection
+    // 5. Add the word to user's collection
     await addWordToCollection(userId, collectionId, headword);
 
-    // 5. Return entries by headword
+    // 6. Return entries by headword
     const entries = await getEntriesByWord(headword);
     return Response.json({ word: headword, entries }, { headers: corsHeaders });
   } catch (err) {
     console.error(err);
-    return Response.json(
-      { error: "Internal server error" },
-      { status: 500, headers: corsHeaders },
-    );
+    return Response.json({ error: "Internal server error" }, { status: 500, headers: corsHeaders });
   }
 });
